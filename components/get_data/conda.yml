@@ -5,6 +5,8 @@ channels:
 dependencies:
   - pip=20.3.3
   - requests=2.24.0
+  - numpy=1.23.5
+  - bb
   - mlflow=1.14.1
   - pip:
       - wandb==0.10.31
