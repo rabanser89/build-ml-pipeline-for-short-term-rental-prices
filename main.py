@@ -99,7 +99,6 @@ def go(config: DictConfig):
             # NOTE: use the rf_config we just created as the rf_config parameter for the train_random_forest
             # step
 
-            ##################
             _ = mlflow.run(
                     os.path.join(hydra.utils.get_original_cwd(), "src", "train_random_forest"),
                     "main",
@@ -113,28 +112,21 @@ def go(config: DictConfig):
                         "output_artifact": "random_forest_export"
                     }
                 )
-            ##################
 
         if "test_regression_model" in active_steps:
 
-            ##################
-            # Implement here #
-            ##################
-
-            pass
+            _ = mlflow.run(
+                    f"{config['main']['components_repository']}/test_regression_model",
+                    "main",
+                    version="main",
+                    parameters={
+                        "mlflow_model":"random_forest_export:prod",
+                        "test_dataset": "test_data.csv:latest"
+                    }
+                )
 
 
 if __name__ == "__main__":
     go()
 
 
-
-##########################
-#running hyperparam. optimization by hydra with
-"""
-mlflow run . \
-  -P steps="train_random_forest" \
-  -P hydra_options="modeling.max_tfidf_features=10,15,30 modeling.random_forest.max_features=0.1,0.33,0.5,0.75,1 -m"
-
-"""
-############################  
