@@ -22,9 +22,11 @@ def go(args):
     df = pd.read_csv(artifact_local_path)
 
     logger.info("Drop outliers")
+    #Drop if price is not within range given by min_price and max_price
     idx = df['price'].between(args.min_price, args.max_price)
     df = df[idx].copy()
     logger.info("Convert last_review to datetime")
+    #Change date format from string to datetime
     df['last_review'] = pd.to_datetime(df['last_review'])
 
     df.to_csv("clean_sample.csv", index=False)
